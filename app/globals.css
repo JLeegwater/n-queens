@@ -44,7 +44,7 @@ body {
 [class*="attacked"] {
 	/* Your styles for classes containing "attacked" */
 	/* For example: */
-	background: yellow;
+	background: darkred;
 	/* Add any other styles you want */
 }
 .queen {

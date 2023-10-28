@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState, useEffect } from "react";
 
 function reducer(state, action) {
 	// Destructure arrays from state
@@ -42,6 +42,7 @@ function reducer(state, action) {
 
 export function Chessboard({ numQueens = 8 }) {
 	const squareSize = 100 / numQueens;
+	const [isOpen, setIsOpen] = useState(false);
 	const initialState = {
 		queens: Array(numQueens).fill(-1),
 		takenColumns: Array(numQueens).fill(false),
@@ -49,6 +50,10 @@ export function Chessboard({ numQueens = 8 }) {
 		takenAntidiagonals: Array(numQueens * 2 - 1).fill(false),
 	};
 	const [state, dispatch] = useReducer(reducer, initialState);
+
+	useEffect(() => {
+		countQueens();
+	}, [state]);
 
 	const isQueen = (row, col) => {
 		return state.queens[row] == col ? true : false;
@@ -78,6 +83,14 @@ export function Chessboard({ numQueens = 8 }) {
 
 		return false;
 	};
+	const countQueens = () => {
+		let count = 0;
+		state.queens.forEach((element) => {
+			element != -1 && count++;
+		});
+		count == numQueens && setIsOpen(true);
+		return count;
+	};
 
 	const onClick = (row, col) => {
 		if (!isTileAttacked(row, col) || isQueen(row, col)) {
@@ -92,6 +105,23 @@ export function Chessboard({ numQueens = 8 }) {
 
 	return (
 		<div className="w-full max-w-full flex flex-col mx-auto border-black ">
+			{isOpen && (
+				<div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-auto">
+					<div className="bg-white p-6 rounded-lg text-black">
+						<h2 className="text-lg font-medium">Congratulations!</h2>
+
+						<p className="mt-4">You found a solution! Well done.</p>
+
+						<button
+							className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+							onClick={() => setIsOpen(false)}
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
+
 			{[...Array(numQueens)].map((_, rowIndex) => (
 				<div className="flex " key={rowIndex}>
 					{[...Array(numQueens)].map((_, colIndex) => {
@@ -109,7 +139,7 @@ export function Chessboard({ numQueens = 8 }) {
 									width: `${squareSize}vw`,
 								}}
 							>
-								<span className="absolute">
+								<span className="absolute z-20">
 									{colIndex + rowIndex * numQueens}
 								</span>
 								{state.queens[rowIndex] === colIndex && (

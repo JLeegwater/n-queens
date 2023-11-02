@@ -48,12 +48,10 @@ body {
 	/* Add any other styles you want */
 }
 .queen {
-	background-image: url("../app/queen-image.png");
+	background-image: url("../app/Queen.svg");
 	background-position: center;
+	background-repeat: no-repeat;
 	/* Set appropriate width and height for the queen image */
 	width: 100%;
 	height: 100%;
-}
-.number {
-	position: absolute;
 }

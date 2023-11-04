@@ -17,7 +17,7 @@ const BoardSettings = ({ onSettingsChange }) => {
 			<input
 				type="range"
 				id="queens"
-				className="block w-full p-2 mt-2 bg-white border border-black rounded text-black"
+				className="block w-full mt-2 border-black text-black p-0"
 				min={4}
 				max={16}
 				value={queens}
